@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/restaurant_model.dart';
 import '../models/restaurant_table_model.dart';
@@ -20,3 +20,5 @@ class RestaurantService {
     return snapshot.docs.map((doc) => RestaurantTableModel.fromMap(doc.data(), doc.id)).toList();
   }
 }
+
+

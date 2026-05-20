@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReviewModel {
   const ReviewModel({required this.id, required this.userId, required this.bookingId, required this.restaurantId, required this.rating, required this.comment, required this.createdAt});
@@ -23,3 +23,5 @@ class ReviewModel {
 
   Map<String, dynamic> toMap() => {'id': id, 'userId': userId, 'bookingId': bookingId, 'restaurantId': restaurantId, 'rating': rating, 'comment': comment, 'createdAt': Timestamp.fromDate(createdAt)};
 }
+
+

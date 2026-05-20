@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NotificationModel {
   const NotificationModel({required this.id, required this.userId, required this.title, required this.message, required this.isRead, required this.createdAt});
@@ -21,3 +21,5 @@ class NotificationModel {
 
   Map<String, dynamic> toMap() => {'id': id, 'userId': userId, 'title': title, 'message': message, 'isRead': isRead, 'createdAt': Timestamp.fromDate(createdAt)};
 }
+
+

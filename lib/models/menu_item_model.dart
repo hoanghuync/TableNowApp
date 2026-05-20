@@ -1,4 +1,4 @@
-class MenuItemModel {
+﻿class MenuItemModel {
   const MenuItemModel({required this.id, required this.restaurantId, required this.name, required this.category, required this.price, required this.description, required this.imageUrl, required this.isAvailable});
 
   final String id;
@@ -32,3 +32,5 @@ class MenuItemModel {
     'isAvailable': isAvailable,
   };
 }
+
+

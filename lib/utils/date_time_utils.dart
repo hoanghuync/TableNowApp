@@ -1,4 +1,4 @@
-import 'package:intl/intl.dart';
+﻿import 'package:intl/intl.dart';
 
 class DateTimeUtils {
   static final DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
@@ -21,3 +21,5 @@ class DateTimeUtils {
     return selected >= minutes(openTime) && selected <= minutes(closeTime);
   }
 }
+
+

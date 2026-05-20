@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 
 import '../models/app_user_model.dart';
 import '../services/auth_service.dart';
@@ -35,3 +35,5 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> logout() async { await service.logout(); user = null; notifyListeners(); }
 }
+
+

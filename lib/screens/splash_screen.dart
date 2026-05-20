@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -29,3 +29,5 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) => const Scaffold(body: LoadingView(message: 'Dang khoi dong TableNow...'));
 }
+
+

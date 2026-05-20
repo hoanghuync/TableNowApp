@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:tablenowapp/models/app_user_model.dart';
@@ -17,8 +17,8 @@ void main() {
   group('business rules', () {
     test('calculateTotalAmount()', () {
       final total = calculateTotalAmount(const [
-        BookingItemModel(menuItemId: 'a', name: 'Pho', price: 50000, quantity: 2),
-        BookingItemModel(menuItemId: 'b', name: 'Tra', price: 20000, quantity: 3),
+        BookingItemModel(menuItemId: 'a', restaurantId: 'main-restaurant', name: 'Pho', price: 50000, quantity: 2),
+        BookingItemModel(menuItemId: 'b', restaurantId: 'main-restaurant', name: 'Tra', price: 20000, quantity: 3),
       ]);
       expect(total, 160000);
     });
@@ -33,6 +33,13 @@ void main() {
       expect(validateGuestNumber(1), isNull);
       expect(validateGuestNumber(0), isNotNull);
       expect(validateGuestNumber(null), isNotNull);
+    });
+
+    test('validatePreOrderItems() requires same restaurant', () {
+      expect(
+        validatePreOrderItems(const [BookingItemModel(menuItemId: 'a', restaurantId: 'other', name: 'Pho', price: 50000, quantity: 1)], 'main-restaurant'),
+        isNotNull,
+      );
     });
   });
 
@@ -68,9 +75,12 @@ void main() {
       ),
     );
 
-    expect(find.text('Confirm Booking'), findsOneWidget);
-    await tester.tap(find.text('Confirm Booking'));
+    expect(find.textContaining('Xac nhan dat ban'), findsOneWidget);
+    await tester.ensureVisible(find.textContaining('Xac nhan dat ban'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.textContaining('Xac nhan dat ban'));
     await tester.pump();
-    expect(find.text('Vui long chon ban'), findsOneWidget);
+    expect(find.text('Vui long chon ngay dat ban'), findsOneWidget);
   });
 }
+

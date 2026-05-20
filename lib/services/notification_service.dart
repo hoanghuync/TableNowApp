@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/notification_model.dart';
 
@@ -14,3 +14,5 @@ class NotificationService {
 
   Future<void> markRead(String id) => _firestore.collection('notifications').doc(id).update({'isRead': true});
 }
+
+

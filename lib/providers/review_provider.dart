@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 
 import '../models/booking_model.dart';
 import '../models/review_model.dart';
@@ -17,3 +17,5 @@ class ReviewProvider extends ChangeNotifier {
     try { await service.createReview(ReviewModel(id: '', userId: booking.userId, bookingId: booking.id, restaurantId: booking.restaurantId, rating: rating, comment: comment, createdAt: DateTime.now()), booking); error = null; return true; } catch (e) { error = e.toString(); return false; } finally { isLoading = false; notifyListeners(); }
   }
 }
+
+

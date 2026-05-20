@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({super.key, required this.controller, required this.label, this.validator, this.keyboardType, this.obscureText = false, this.maxLines = 1, this.icon});
@@ -23,3 +23,5 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
+
+

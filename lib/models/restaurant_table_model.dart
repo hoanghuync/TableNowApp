@@ -1,4 +1,4 @@
-class RestaurantTableModel {
+﻿class RestaurantTableModel {
   const RestaurantTableModel({required this.id, required this.restaurantId, required this.tableName, required this.capacity, required this.status});
 
   final String id;
@@ -17,3 +17,5 @@ class RestaurantTableModel {
 
   Map<String, dynamic> toMap() => {'id': id, 'restaurantId': restaurantId, 'tableName': tableName, 'capacity': capacity, 'status': status};
 }
+
+

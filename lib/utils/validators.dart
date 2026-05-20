@@ -1,4 +1,4 @@
-import '../models/booking_item_model.dart';
+﻿import '../models/booking_item_model.dart';
 import 'date_time_utils.dart';
 
 double calculateTotalAmount(List<BookingItemModel> items) => items.fold<double>(0, (total, item) => total + item.price * item.quantity);
@@ -42,3 +42,14 @@ String? validateBookingTime({required String? date, required String? time, requi
   if (selectedDateTime.isBefore(now ?? DateTime.now())) return 'Khong duoc dat ban trong qua khu';
   return null;
 }
+
+String? validatePreOrderItems(List<BookingItemModel> items, String restaurantId) {
+  for (final item in items) {
+    if (item.quantity <= 0) return 'So luong mon phai lon hon 0';
+    if (item.price < 0) return 'Gia mon khong hop le';
+    if (item.restaurantId != restaurantId) return 'Mon dat truoc phai thuoc dung nha hang';
+  }
+  return null;
+}
+
+

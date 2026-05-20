@@ -1,4 +1,4 @@
-class RestaurantModel {
+﻿class RestaurantModel {
   const RestaurantModel({required this.id, required this.name, required this.address, required this.phone, required this.openTime, required this.closeTime, required this.description, required this.imageUrl, required this.latitude, required this.longitude});
 
   final String id;
@@ -38,3 +38,5 @@ class RestaurantModel {
     'longitude': longitude,
   };
 }
+
+

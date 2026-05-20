@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 
 import '../models/booking_model.dart';
 import '../models/booking_item_model.dart';
@@ -31,3 +31,5 @@ class BookingProvider extends ChangeNotifier {
 
   Map<String, int> countByDate() { final result = <String, int>{}; for (final booking in bookings) { result[booking.bookingDate] = (result[booking.bookingDate] ?? 0) + 1; } return result; }
 }
+
+

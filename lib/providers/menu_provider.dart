@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 
 import '../models/menu_item_model.dart';
 import '../services/menu_service.dart';
@@ -21,3 +21,5 @@ class MenuProvider extends ChangeNotifier {
     try { items = await service.getMenuItems(restaurantId, forceRefresh: forceRefresh); error = null; } catch (e) { error = e.toString(); } finally { isLoading = false; notifyListeners(); }
   }
 }
+
+

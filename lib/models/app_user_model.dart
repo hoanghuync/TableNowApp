@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AppUserModel {
   const AppUserModel({required this.uid, required this.fullName, required this.email, required this.phone, required this.role, required this.createdAt});
@@ -30,3 +30,5 @@ class AppUserModel {
     'createdAt': Timestamp.fromDate(createdAt),
   };
 }
+
+

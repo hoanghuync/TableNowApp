@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'booking_item_model.dart';
 
 class BookingModel {
@@ -65,3 +65,5 @@ class BookingModel {
     'createdAt': Timestamp.fromDate(createdAt),
   };
 }
+
+

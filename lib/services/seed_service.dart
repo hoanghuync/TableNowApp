@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/menu_item_model.dart';
 import '../models/restaurant_model.dart';
@@ -65,3 +65,5 @@ class SeedService {
     isAvailable: true,
   );
 }
+
+

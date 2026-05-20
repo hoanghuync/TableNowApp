@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+﻿import 'package:flutter/foundation.dart';
 
 import '../models/booking_item_model.dart';
 import '../models/menu_item_model.dart';
@@ -12,8 +12,15 @@ class CartProvider extends ChangeNotifier {
   int get totalQuantity => items.fold<int>(0, (total, item) => total + item.quantity);
 
   void add(MenuItemModel item) {
+    if (!item.isAvailable) return;
     final current = _items[item.id];
-    _items[item.id] = BookingItemModel(menuItemId: item.id, name: item.name, price: item.price, quantity: (current?.quantity ?? 0) + 1);
+    _items[item.id] = BookingItemModel(
+      menuItemId: item.id,
+      restaurantId: item.restaurantId,
+      name: item.name,
+      price: item.price,
+      quantity: (current?.quantity ?? 0) + 1,
+    );
     notifyListeners();
   }
 
@@ -23,7 +30,13 @@ class CartProvider extends ChangeNotifier {
     if (current.quantity <= 1) {
       _items.remove(menuItemId);
     } else {
-      _items[menuItemId] = BookingItemModel(menuItemId: current.menuItemId, name: current.name, price: current.price, quantity: current.quantity - 1);
+      _items[menuItemId] = BookingItemModel(
+        menuItemId: current.menuItemId,
+        restaurantId: current.restaurantId,
+        name: current.name,
+        price: current.price,
+        quantity: current.quantity - 1,
+      );
     }
     notifyListeners();
   }
@@ -33,3 +46,5 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+
