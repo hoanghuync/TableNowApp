@@ -1,0 +1,41 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function userDoc() { return get(/databases/$(database)/documents/users/$(request.auth.uid)); }
+    function isAdmin() { return signedIn() && userDoc().data.role in ['admin', 'staff']; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+
+    match /users/{uid} {
+      allow read, update: if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid) || isAdmin();
+      match /favorites/{itemId} { allow read, write: if isOwner(uid); }
+      match /cart/{cartItemId} { allow read, write: if isOwner(uid); }
+    }
+
+    match /categories/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /menu_items/{id} { allow read: if resource.data.isActive == true || isAdmin(); allow write: if isAdmin(); }
+    match /promotions/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /tables/{id} { allow read: if signedIn(); allow write: if isAdmin(); }
+
+    match /bookings/{id} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if isAdmin() || resource.data.userId == request.auth.uid;
+      allow update: if isAdmin() || (resource.data.userId == request.auth.uid && resource.data.status in ['pending', 'confirmed']);
+      allow delete: if false;
+    }
+
+    match /orders/{id} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if isAdmin() || resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /reviews/{id} {
+      allow read: if true;
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+  }
+}
