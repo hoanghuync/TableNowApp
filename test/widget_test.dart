@@ -1,86 +1,61 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:tablenowapp/models/app_user_model.dart';
-import 'package:tablenowapp/models/booking_item_model.dart';
-import 'package:tablenowapp/models/restaurant_model.dart';
-import 'package:tablenowapp/models/restaurant_table_model.dart';
-import 'package:tablenowapp/providers/auth_provider.dart';
-import 'package:tablenowapp/providers/booking_provider.dart';
-import 'package:tablenowapp/providers/cart_provider.dart';
-import 'package:tablenowapp/providers/restaurant_provider.dart';
-import 'package:tablenowapp/screens/booking_screen.dart';
-import 'package:tablenowapp/screens/login_screen.dart';
-import 'package:tablenowapp/utils/validators.dart';
+import 'package:tablenowapp/providers/app_state.dart';
+import 'package:tablenowapp/screens/auth/login_screen.dart';
+import 'package:tablenowapp/screens/customer/booking_screen.dart';
 
 void main() {
-  group('business rules', () {
-    test('calculateTotalAmount()', () {
-      final total = calculateTotalAmount(const [
-        BookingItemModel(menuItemId: 'a', restaurantId: 'main-restaurant', name: 'Pho', price: 50000, quantity: 2),
-        BookingItemModel(menuItemId: 'b', restaurantId: 'main-restaurant', name: 'Tra', price: 20000, quantity: 3),
-      ]);
-      expect(total, 160000);
+  group('Rustic Kitchen business rules', () {
+    test('cart calculates subtotal, discount, and total', () {
+      final state = AppState();
+      state.addToCart(state.menuItems.firstWhere((item) => item.id == 'combo-fuji'));
+      expect(state.cartSubtotal, 549000);
+      expect(state.cartDiscount, 54900);
+      expect(state.cartTotal, 494100);
     });
 
-    test('validateBookingDate()', () {
-      final now = DateTime(2026, 5, 20, 10);
-      expect(validateBookingDate(DateTime(2026, 5, 21), now: now), isNull);
-      expect(validateBookingDate(DateTime(2026, 5, 19), now: now), isNotNull);
+    test('admin confirm booking reserves table', () {
+      final state = AppState();
+      final booking = state.pendingBookings.first;
+      state.updateBookingStatus(booking, 'confirmed');
+      expect(state.bookings.firstWhere((item) => item.id == booking.id).status, 'confirmed');
+      expect(state.tables.firstWhere((table) => table.id == booking.tableId).status, 'reserved');
     });
 
-    test('validateGuestNumber()', () {
-      expect(validateGuestNumber(1), isNull);
-      expect(validateGuestNumber(0), isNotNull);
-      expect(validateGuestNumber(null), isNotNull);
-    });
-
-    test('validatePreOrderItems() requires same restaurant', () {
-      expect(
-        validatePreOrderItems(const [BookingItemModel(menuItemId: 'a', restaurantId: 'other', name: 'Pho', price: 50000, quantity: 1)], 'main-restaurant'),
-        isNotNull,
-      );
+    test('availableTablesFor filters by capacity and status', () {
+      final state = AppState();
+      final tables = state.availableTablesFor(4);
+      expect(tables.every((table) => table.status == 'available' && table.capacity >= 4), isTrue);
     });
   });
 
-  testWidgets('LoginScreen has email field, password field, login button', (tester) async {
+  testWidgets('LoginScreen shows customer and admin demo actions', (tester) async {
     await tester.pumpWidget(
       ChangeNotifierProvider(
-        create: (_) => AuthProvider(),
+        create: (_) => AppState(),
         child: const MaterialApp(home: LoginScreen()),
       ),
     );
 
-    expect(find.widgetWithText(TextFormField, 'Email'), findsOneWidget);
-    expect(find.widgetWithText(TextFormField, 'Password'), findsOneWidget);
-    expect(find.text('Login'), findsOneWidget);
+    expect(find.text('Rustic Kitchen'), findsOneWidget);
+    expect(find.text('Dang nhap'), findsOneWidget);
+    expect(find.text('Vao che do Admin demo'), findsOneWidget);
   });
 
-  testWidgets('BookingScreen shows Confirm Booking and validates missing info', (tester) async {
-    final restaurantProvider = RestaurantProvider()
-      ..restaurant = const RestaurantModel(id: 'main-restaurant', name: 'TableNow Bistro', address: 'HCMC', phone: '0909', openTime: '08:00', closeTime: '22:00', description: 'Demo', imageUrl: '', latitude: 0, longitude: 0)
-      ..tables = const [RestaurantTableModel(id: 'table-1', restaurantId: 'main-restaurant', tableName: 'Ban 1', capacity: 4, status: 'available')];
-    final authProvider = AuthProvider()
-      ..user = AppUserModel(uid: 'u1', fullName: 'Customer', email: 'c@test.com', phone: '0909', role: 'customer', createdAt: DateTime(2026, 5, 20));
-
+  testWidgets('BookingScreen shows reservation CTA', (tester) async {
     await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<AuthProvider>.value(value: authProvider),
-          ChangeNotifierProvider<RestaurantProvider>.value(value: restaurantProvider),
-          ChangeNotifierProvider(create: (_) => BookingProvider()),
-          ChangeNotifierProvider(create: (_) => CartProvider()),
-        ],
-        child: const MaterialApp(home: BookingScreen()),
+      ChangeNotifierProvider(
+        create: (_) => AppState(),
+        child: const MaterialApp(home: BookingScreenRustic()),
       ),
     );
 
-    expect(find.textContaining('Xac nhan dat ban'), findsOneWidget);
-    await tester.ensureVisible(find.textContaining('Xac nhan dat ban'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.textContaining('Xac nhan dat ban'));
-    await tester.pump();
-    expect(find.text('Vui long chon ngay dat ban'), findsOneWidget);
+    expect(find.text('Reserve a Table'), findsOneWidget);
+    expect(find.text('When are you joining us?'), findsOneWidget);
+    expect(find.text('SELECT DATE'), findsOneWidget);
+    expect(find.text('DINNER SERVICE'), findsOneWidget);
   });
 }
+
 
